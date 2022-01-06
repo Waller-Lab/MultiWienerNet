@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>Deep learning for fast spatially-varying deconvolution</title>
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<link href="styles/minimal.css" rel="stylesheet">
+</head>
+
+<body>
+
+<!-- Navigation bar -->
+<nav class="navbar navbar-default navbar-fixed-top">
+	<div class="container-nav">
+		<div class="container-fluid">
+    		<ul class="nav navbar-nav">
+      			<li class="nav-item active"><a href="index.html">Home</a></li>
+      			<li class="nav-item"><a href="gallery.html">Gallery</a></li>
+				<li class="nav-item"><a href="https://github.com/Waller-Lab/MultiWienerNet">Code</a></li>
+				<li class="nav-item"><a href="https://doi.org/10.1364/OPTICA.442438">Paper</a></li>
+    		</ul>
+      	</div>
+    </div>
+</nav>
+
+<div class="container">
+
+	<div class="row">
+		<h1><b>Deep learning for fast spatially-varying deconvolution</b></h1>
+		<h5><b><a href="https://kyrollosyanny.com/">Kyrollos Yanny*</a>, <a href="https://kristinamonakhova.com/">Kristina Monakhova*</a>, <a href = "https://www.linkedin.com/in/richard-shuai/">Richard Shuai</a>, and <a href="http://www.laurawaller.com/">Laura Waller</a></b></h5>
+		<br />
+		<img class="center" src="resources/overview.jpg" style="width:700px">
+	</div>
+
+	<div class="row">
+		<h3><b>Abstract</b></h3>
+		<p>Deconvolution can be used to obtain sharp images or volumes from blurry
+			or encoded measurements in imaging systems. Given knowledge of the
+			system’s point spread function (PSF) over the field-of-view, a
+			reconstruction algorithm can be used to recover a clear image or volume.
+			Most deconvolution algorithms assume shift-invariance; however, in
+			realistic systems, the PSF varies laterally and axially across the
+			field-of-view, due to aberrations or design. Shift-varying models can be
+			used, but are often slow and computationally intensive. In this work, we
+			propose adeep learning-based approach that leverages knowledge about the
+			system’s spatially-varying PSFs for fast 2D and 3D reconstructions. Our
+			approach, termed MultiWienerNet, uses multiple differentiable Wiener
+			filters paired with a convolutional neural network to incorporate
+			spatial-variance. Trained using simulated data and tested on experimental
+			data, our approach offers a 625 − 1600× speed-up compared to iterative
+			methods with a spatially-varying model, and outperforms existing
+			deep-learning based methods that assume shiftinvariance.</p>
+		</div>
+
+<!--
+	<div class="row">
+		<h3><b>Overview Video</b></h3>
+		<iframe width="660" height="415"
+src="https://www.youtube.com/embed/ReH0x_W3glM">
+</iframe>
+</div>-->
+
+	<div class="row">
+		<h3><b>Resources</b></h3>
+		<ul>
+			<li>Open source code: <b><a href="https://github.com/Waller-Lab/MultiWienerNet">here</a></b></li>
+			<li>Paper in Optica: <b><a href="https://doi.org/10.1364/OPTICA.442438">here</a></b></li>
+			<li>Miniscope3D <b><a href="https://github.com/Waller-Lab/Miniscope3D">code</a></b> and <b><a href="https://waller-lab.github.io/Miniscope3D/">project page</a></b> </li>
+			<!-- <li><b><a href="gallery.html">Gallery</a></b> of reconstructions</li>-->
+		</ul>
+	</div>
+
+
+
+</body>
+</html>
