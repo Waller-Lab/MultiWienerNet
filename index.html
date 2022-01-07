@@ -50,7 +50,7 @@
 			realistic systems, the PSF varies laterally and axially across the
 			field-of-view, due to aberrations or design. Shift-varying models can be
 			used, but are often slow and computationally intensive. In this work, we
-			propose adeep learning-based approach that leverages knowledge about the
+			propose a deep learning-based approach that leverages knowledge about the
 			system’s spatially-varying PSFs for fast 2D and 3D reconstructions. Our
 			approach, termed MultiWienerNet, uses multiple differentiable Wiener
 			filters paired with a convolutional neural network to incorporate
@@ -71,8 +71,8 @@
 		</div>
 
 		<div class="row">
-			<h3><b>Method overview</b></h3>
-			<h4><b>Cablibration</b></h4>
+			<h2><b>Method overview</b></h2>
+			<h3><b>Calibration</b></h3>
 			<p>We need to calibrate the network for each new microscope or imaging
 				system. To calibrate, we scan a bead across the field of view of the
 				microscope and capture point spread functions (PSFs).
@@ -81,15 +81,15 @@
 
 		</div>
 		<div class="row">
-		<h4> <b>Dataset creation</b> </h4>
+		<h3> <b>Dataset creation</b> </h3>
 		<p>
 		With our calibrated PSFs, we can create a forward model for our microscope
 		and use this to generate training data for our network.</p>
 		<img class="center" src="resources/dataset_gif.gif" style="width:400px">
 
 		</div>
-		<div>
-		<h4> <b>Training </b></h4>
+		<div class="row">
+		<h3> <b>Training </b></h3>
 		<p>
 		We initialize our network filters with a subset of our measured PSFs. The network
 		performs a Wiener deconvolution step for each filter, then combines the
@@ -100,8 +100,8 @@
 		<img class="center" src="resources/training_gif.gif" style="width:650px">
 
 		</div>
-		<div>
-		<h4> <b>Fast deconvolutions </b></h4>
+		<div class="row">
+		<h3> <b>Fast deconvolutions </b></h3>
 		<p>
 		After training, we can use our deconvolution network on real data! </p>
 		<img class="center" src="resources/deconv_gif.gif" style="width:400px">
