@@ -57,8 +57,61 @@
 			spatial-variance. Trained using simulated data and tested on experimental
 			data, our approach offers a 625 − 1600× speed-up compared to iterative
 			methods with a spatially-varying model, and outperforms existing
-			deep-learning based methods that assume shiftinvariance.</p>
+			deep-learning based methods that assume shift invariance.</p>
 		</div>
+
+		<div class="row">
+			<h3><b>Resources</b></h3>
+			<ul>
+				<li>Open source code: <b><a href="https://github.com/Waller-Lab/MultiWienerNet">here</a></b></li>
+				<li>Paper in Optica: <b><a href="https://doi.org/10.1364/OPTICA.442438">here</a></b></li>
+				<li>Miniscope3D <b><a href="https://github.com/Waller-Lab/Miniscope3D">code</a></b> and <b><a href="https://waller-lab.github.io/Miniscope3D/">project page</a></b> </li>
+				<!-- <li><b><a href="gallery.html">Gallery</a></b> of reconstructions</li>-->
+			</ul>
+		</div>
+
+		<div class="row">
+			<h3><b>Method overview</b></h3>
+			<h4><b>Cablibration</b></h4>
+			<p>We need to calibrate the network for each new microscope or imaging
+				system. To calibrate, we scan a bead across the field of view of the
+				microscope and capture point spread functions (PSFs).
+		</p>
+			<img class="center" src="resources/CalibrationGIF.gif" style="width:400px">
+
+		</div>
+		<div class="row">
+		<h4> <b>Dataset creation</b> </h4>
+		<p>
+		With our calibrated PSFs, we can create a forward model for our microscope
+		and use this to generate training data for our network.</p>
+		<img class="center" src="resources/dataset_gif.gif" style="width:400px">
+
+		</div>
+		<div>
+		<h4> <b>Training </b></h4>
+		<p>
+		We initialize our network filters with a subset of our measured PSFs. The network
+		performs a Wiener deconvolution step for each filter, then combines the
+		intermediate images into the final deconvoled image. The parameters of the
+		network are updated to minimize the loss between the deconvolved image and
+		the ground truth image over the entire dataset.</p>
+
+		<img class="center" src="resources/training_gif.gif" style="width:650px">
+
+		</div>
+		<div>
+		<h4> <b>Fast deconvolutions </b></h4>
+		<p>
+		After training, we can use our deconvolution network on real data! </p>
+		<img class="center" src="resources/deconv_gif.gif" style="width:400px">
+
+		<p>
+		Our method works for 2D deconvolutions, as well as compressive 3D
+		deconvolutions in which a 3D volume is recovered from a 2D measurement.</p>
+		</div>
+
+
 
 <!--
 	<div class="row">
@@ -68,15 +121,7 @@ src="https://www.youtube.com/embed/ReH0x_W3glM">
 </iframe>
 </div>-->
 
-	<div class="row">
-		<h3><b>Resources</b></h3>
-		<ul>
-			<li>Open source code: <b><a href="https://github.com/Waller-Lab/MultiWienerNet">here</a></b></li>
-			<li>Paper in Optica: <b><a href="https://doi.org/10.1364/OPTICA.442438">here</a></b></li>
-			<li>Miniscope3D <b><a href="https://github.com/Waller-Lab/Miniscope3D">code</a></b> and <b><a href="https://waller-lab.github.io/Miniscope3D/">project page</a></b> </li>
-			<!-- <li><b><a href="gallery.html">Gallery</a></b> of reconstructions</li>-->
-		</ul>
-	</div>
+
 
 
 
