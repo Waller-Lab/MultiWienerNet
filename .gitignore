@@ -1,0 +1,17 @@
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+__pycache__/
+ipython_config.py
+
+.python-version
+*.png
+*.jpg
+*.jpeg
+*.tiff
+*.npy 
+*.pt
+/tensorflow/saved_models/*
+/pytorch/saved_models/*
+/pytorch/*
+/common/process_psf_for_svd.ipynb
+/data/multiWienerPSFStack_40z_aligned.mat
