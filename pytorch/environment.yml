@@ -1,0 +1,26 @@
+name: multiwiener_torch3
+channels:
+  - conda-forge
+  - pytorch
+dependencies:
+  - cudatoolkit=10.2
+  - pytorch=1.9
+  - torchvision>=0.5
+  - python=3.8
+  - pip
+  - nb_conda
+  - numpy=1.18
+  - matplotlib
+  - scipy
+  - opencv
+  - imageio
+  - ipykernel
+  - ipython
+  - scikit-image
+  - hdf5storage
+  - ipywidgets
+  
+  - pip:
+    - pytorch-msssim==0.2.1
+    - tifffile
+    
