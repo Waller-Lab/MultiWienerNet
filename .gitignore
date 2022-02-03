@@ -13,6 +13,5 @@ ipython_config.py
 /tensorflow/saved_models/*
 /pytorch/saved_models/*
 /pytorch/saved_data/*
-/common/process_psf_for_svd.ipynb
 /data/multiWienerPSFStack_40z_aligned.mat
 /pytorch/2D deconvolution demo (pretrained).ipynb

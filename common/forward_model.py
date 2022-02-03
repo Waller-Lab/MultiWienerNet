@@ -45,7 +45,7 @@ def A_2d_svd_power(x,H,weights,pad,mode='shift_variant'): #NOTE, H is already pa
     return np.real((np.fft.ifftshift(np.fft.ifft2(Y))))
 
 def A_2d_svd_crop(x,H,weights,pad,crop_indices,mode='shift_variant'): #NOTE, H is already padded outside to save memory
-    #x=pad(x)
+    x=pad(x)
     #Y=np.zeros((x.shape[0],x.shape[1]))
     Y=np.zeros_like(x)
         

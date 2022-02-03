@@ -11,7 +11,7 @@ sys.path.append('helper_functions/')
     
 def plotf2(r, img, ttl, sz):
     plt.title(ttl+' {}'.format(r))
-    plt.imshow(img[:,:,r], cmap="gray", vmin = 0, vmax = np.max(img));
+    plt.imshow(img[:,:,r], vmin = np.min(img), vmax = np.max(img));
     plt.axis('off');
     fig = plt.gcf()
     fig.set_size_inches(sz)
@@ -20,6 +20,25 @@ def plotf2(r, img, ttl, sz):
 
 def plt3D(img, title = '', size = (5,5)):
     interact(plotf2, 
+             r=widgets.IntSlider(min=0,max=np.shape(img)[-1]-1,step=1,value=1), 
+             img = fixed(img), 
+             continuous_update= False, 
+             ttl = fixed(title), 
+             sz = fixed(size));
+    
+    
+    
+def plotf22(r, img, ttl, sz):
+    plt.title(ttl+' {}'.format(r))
+    plt.imshow(img[:,:,r], vmin = np.min(img[:,:,r]), vmax = np.max(img[:,:,r]));
+    plt.axis('off');
+    fig = plt.gcf()
+    fig.set_size_inches(sz)
+    plt.show();
+    return 
+
+def plt3D2(img, title = '', size = (5,5)):
+    interact(plotf22, 
              r=widgets.IntSlider(min=0,max=np.shape(img)[-1]-1,step=1,value=1), 
              img = fixed(img), 
              continuous_update= False, 

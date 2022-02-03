@@ -26,7 +26,7 @@ source activate multiwiener_tf
 ```
 
 ## Using pre-trained models
-We provide an example of a pre-trained MutliWienerNet for fast 2D deconvolutions as well as compressive 3D deconvolutions from 2D measurements. These examples are based on data for Randoscope3D. To adapt this model to your own data, please see [below](#training_link). 
+We provide an example of a pre-trained MutliWienerNet for fast 2D deconvolutions as well as compressive 3D deconvolutions from 2D measurements. These examples are based on data for Randoscope3D. To adapt this model to your own data, please see below. 
 
 
 ### Loading in pretrained models
@@ -35,4 +35,18 @@ Please download these and place them in the pytorch/saved_models and tensorflow/
 
 ### Loading in data 
 We provide several limited examples of 2D and 3D data in /data/
-You can download the full dataset that we have used for training [here](link). 
+You can download the full dataset that we have used for training [here 2D](https://drive.google.com/drive/folders/199awM1qqQDqScgeI_HF65CG9PyjUWHGH?usp=sharing), [here 3D](https://drive.google.com/drive/folders/1QxtvjhCjnq9PtS9qMn5TVtSbg5sck3Ju?usp=sharing).
+You also need to download the PFSs [here](https://drive.google.com/file/d/1U6GVX8uSXPKHX1DNhHjs40yWerHi6SFW/view?usp=sharing) and add it to the /data folder. 
+
+## Training for your own microscope/imaging system
+
+### Characterize your imaging system forward model 
+To retrain MultiWienerNet to work for your own imaging system, you first need to simulate realistic measurements from your imaging system to create sharp/blurred image pairs. If you already have a spatially-varying model for your imaging system (e.g. in Zemax), you can use this. If you do not have a model for your spatially-varying imaging system, we propose you follow the following calibration approach: 
+
+* Scan a bead on a 8x8 grid across your microscope/imaging system's field of view. Repeat this for each depth plane of interest. 
+* Run your data through our low rank code [here](https://github.com/Waller-Lab/MultiWienerNet/tree/main/common/process_psf_for_svd.ipynb)
+    
+### Create a dataset 
+You can simulate data using the low rank forward model as shown in the SVD notebook above or use your own field-varying forward model to simulate measurements. 
+### Train your network
+We have provided training scripts for 2D imaging in tensorflow [here](https://github.com/Waller-Lab/MultiWienerNet/blob/main/tensorflow/2D%20deconvolution%20demo%20(pretrained).ipynb) and for single-shot 3D imaging in pytorch [here](https://github.com/Waller-Lab/MultiWienerNet/blob/main/pytorch/3D%20deconvolution%20demo%20(pretrained).ipynb). 
