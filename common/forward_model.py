@@ -45,7 +45,7 @@ def A_2d_svd_power(x,H,weights,pad,mode='shift_variant'): #NOTE, H is already pa
     return np.real((np.fft.ifftshift(np.fft.ifft2(Y))))
 
 def A_2d_svd_crop(x,H,weights,pad,crop_indices,mode='shift_variant'): #NOTE, H is already padded outside to save memory
-    x=pad(x)
+    #x=pad(x)
     #Y=np.zeros((x.shape[0],x.shape[1]))
     Y=np.zeros_like(x)
         
@@ -56,9 +56,21 @@ def A_2d_svd_crop(x,H,weights,pad,crop_indices,mode='shift_variant'): #NOTE, H i
     
     return crop2d(np.real((np.fft.ifftshift(np.fft.ifft2(Y)))),*crop_indices)
 
-def A_2d(x,psf,pad):
+def A_2d(x,H,weights,pad,crop_indices):
     X=np.fft.fft2((pad(x)))
-    H=np.fft.fft2((pad(psf)))
+    Y=np.multiply(X,H)
+    
+    return np.real((np.fft.ifftshift(np.fft.ifft2(Y))))
+
+def A_2d_crop(x,H,weights,pad,crop_indices):
+    X=np.fft.fft2(x)
+    Y=np.multiply(X,H)
+    
+    return crop2d(np.real((np.fft.ifftshift(np.fft.ifft2(Y)))),*crop_indices)
+
+def A_2d_power(x,H,weights,pad,mode='shift_variant'): #NOTE, H is already padded outside to save memory
+
+    X=np.fft.fft2(x)
     Y=np.multiply(X,H)
     
     return np.real((np.fft.ifftshift(np.fft.ifft2(Y))))
@@ -72,12 +84,30 @@ def A_2d_adj_svd(Hconj,weights,y,pad):
     #note the weights are real so we dont take the complex conjugate of it, which is the adjoint of the diag 
     return x
 
-def A_2d_adj(y,psf,pad):
-    H=np.fft.fft2((pad(psf)))
-    Hconj=np.conj(H)
+def A_2d_adj(Hconj,weights,y,pad):
     x=(np.real(np.fft.ifftshift(np.fft.ifft2(np.multiply(Hconj, np.fft.fft2((pad(y))))))))
     
     return x
+
+def A_3d_power(v,H,weights,pad):
+    #h is the psf stack
+    #x is the variable to convolve with h
+    
+    B=np.zeros_like(v)
+    for z in range (H.shape[2]):
+        B=B+np.multiply(H[:,:,z],np.fft.fft2(v))
+    
+    return np.real((np.fft.ifftshift(np.fft.ifft2(B))))
+
+def A_3d_crop(v,H,weights,pad, crop_indices):
+    #h is the psf stack
+    #x is the variable to convolve with h
+    
+    B=np.zeros_like(v[...,0])
+    for z in range (H.shape[2]):
+        B=B+np.multiply(H[:,:,z],np.fft.fft2(v[:,:,z]))
+    
+    return crop2d(np.real((np.fft.ifftshift(np.fft.ifft2(B)))),*crop_indices)
 
 def A_3d(x,h,pad):
     #h is the psf stack
@@ -131,8 +161,15 @@ def A_3d_svd(v,alpha,H,pad):
     return np.real(np.fft.ifftshift(np.fft.ifft2(b)))
 
 
+def A_3d_adj_fista(Hconj,alpha,x,pad):
+    y=np.zeros_like(Hconj)
+    B=np.fft.fft2(pad(x))
+    for z in range(alpha.shape[2]):
+        y[:,:,z]= np.real(np.fft.ifftshift(np.fft.ifft2(np.multiply(B,Hconj[:,:,z]))))
+        
+    return y
 
-def A_3d_adj(x,h,pad):
+def A_3d_adj(Hconj,alpha,x,pad):
     y=np.zeros_like(h)
     X=np.fft.fft2(pad(x))
     for z in range(h.shape[2]):
@@ -151,9 +188,7 @@ def A_3d_adj(x,h,pad):
 
 #def A_3d_adj_svd(b,alpha,Hconj,pad):
 def A_3d_adj_svd(Hconj,alpha,x,pad):
-    #y=sum_r(alpha.*H_conj**b)
-    y=np.zeros((Hconj.shape[0],Hconj.shape[1],Hconj.shape[2])) 
-    #y = pad(y)
+    y=np.zeros_like(Hconj[...,0])
     B=np.fft.fft2(pad(x))
     for z in range(alpha.shape[2]):
         for r in range(alpha.shape[3]):

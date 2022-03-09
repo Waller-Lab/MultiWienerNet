@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt
 
 
 class fista_svd():
-    def __init__(self, H, weights, crop_indices, obj_type = '2D'):
+    def __init__(self, H, weights, crop_indices, obj_type = '2D_svd'):
         
         ## Initialize constants 
         self.DIMS0 = weights.shape[0]  # Image Dimensions
@@ -38,13 +38,25 @@ class fista_svd():
         self.crop_indices = crop_indices
         #self.mask = mask
        
-        if obj_type == '2D':
+        if obj_type == '2D_svd':
             self.Apow = fm.A_2d_svd_power
             self.A = fm.A_2d_svd_crop
             self.Aadj = fm.A_2d_adj_svd
             self.pad = fm.pad2d
             self.im_dims = [weights.shape[0]*2, weights.shape[1]*2]
+        elif obj_type == '2D':
+            self.Apow = fm.A_2d_power
+            self.A = fm.A_2d_crop
+            self.Aadj = fm.A_2d_adj
+            self.pad = fm.pad2d
+            self.im_dims = [weights.shape[0]*2, weights.shape[1]*2]
         elif obj_type == '3D':
+            self.Apow = fm.A_3d_power
+            self.A = fm.A_3d_crop
+            self.Aadj = fm.A_3d_adj_fista
+            self.pad = fm.pad2d
+            self.im_dims = [weights.shape[0]*2, weights.shape[1]*2, H.shape[2]]
+        elif obj_type == '3D_svd':
             self.Apow = fm.A_3d_svd_power
             self.A = fm.A_3d_svd_crop
             self.Aadj = fm.A_3d_adj_svd
@@ -75,6 +87,7 @@ class fista_svd():
         
         self.l_data = []
         self.l_tv = []
+        self.obj_type = obj_type
         
     # Power iteration to calculate eigenvalue 
     def power_iteration(self, A, sample_vect_shape, num_iters):
@@ -84,7 +97,6 @@ class fista_svd():
             bk1_norm = np.linalg.norm(bk1)
 
             bk = bk1/bk1_norm
-            print(bk1.shape)
         Mx = A(bk,self.H, self.weights,fm.pad2d)
         xx = np.transpose(np.dot(bk.ravel(), bk.ravel()))
         eig_b = np.transpose(bk.ravel()).dot(Mx.ravel())/xx
@@ -137,8 +149,6 @@ class fista_svd():
     # Main FISTA update 
     def fista_update(self, vk, tk, xk, inputs):
 
-        #error = self.A(vk[...,0], self.H, self.weights, self.pad, self.crop_indices) - inputs
-        #grads = fm.A_2d_adj_svd(self.Hconj,self.weights,error,fm.pad2d)[..., np.newaxis]
         error = self.A(vk, self.H, self.weights, self.pad, self.crop_indices) - inputs
         grads = self.Aadj(self.Hconj,self.weights,error,self.pad)
     
@@ -163,6 +173,9 @@ class fista_svd():
         for i in range(0,self.iters):
             vk, tk, xk, l = self.fista_update(vk, tk, xk, inputs)
         
+            if device == 'GPU':
+                l =l.get()
+                
             llist.append(l)
         
             # Print out the intermediate results and the loss 
@@ -174,9 +187,10 @@ class fista_svd():
                     out_img = self.crop(xk)
                 
                 if len(out_img.shape)==3:
-                    fc_img = numpy.max(out_img,-1)
+                    fc_img = numpy.max(numpy.real(out_img),-1)
                 else:
                     fc_img = out_img
+                    
                     
                 plt.figure(figsize = (10,3))
                 plt.subplot(1,2,1), plt.imshow(fc_img/numpy.max(fc_img)); plt.title('Reconstruction')

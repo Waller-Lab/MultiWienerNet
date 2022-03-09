@@ -61,7 +61,8 @@ def iht3_py2(w1, w2, ax, shift, shape):
     return y
 
 def tv3dApproxHaar(x, tau, alpha):
-    D = 3
+  
+    D = len(x.shape)  # D =3 for 3D and 2 for 2D
     fact = np.sqrt(2)*2
 
     
